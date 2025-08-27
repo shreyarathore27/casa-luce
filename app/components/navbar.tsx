@@ -33,14 +33,18 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#9e9268] to-[#753116] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <span className="text-white font-bold text-lg">CL</span>
-            </div>
-            <span className="text-3xl font-light text-white tracking-wide group-hover:text-[#9e9268] transition-colors duration-300">
-              Casa Luce
-            </span>
-          </Link>
+         <Link href="/" className="group">
+  <div className="w-64 h-64 group-hover:scale-110 transition-transform duration-300-ml-50">
+    <Image 
+      src="/logonobg.png" 
+      alt="Casa Luce Logo" 
+      width={400} 
+      height={300} 
+      className="object-contain mt-10"
+    />
+  </div>
+</Link>
+
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex space-x-16">
