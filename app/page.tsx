@@ -1,10 +1,11 @@
 "use client"
 import Navbar from './components/navbar';
 import HomePage from './home/page';
+import WhatWeDo from './services/page'
 
 export default function Home() {
   return (
-    <div>
+    <div className="scroll-smooth">
       {/* Fixed Navbar - will stick on scroll with transparent background */}
       <div className="fixed top-0 left-0 right-0 z-50">
         <Navbar />
@@ -17,14 +18,14 @@ export default function Home() {
         </section>
         
         {/* Add more sections here if needed */}
-        {/* 
+        
         <section className="min-h-screen" id="about">
-          <AboutPage />
+          <WhatWeDo />
         </section>
-        <section className="min-h-screen" id="services">
+        {/* <section className="min-h-screen" id="services">
           <ServicesPage />
-        </section>
-        */}
+        </section> */}
+       
       </div>
     </div>
   );

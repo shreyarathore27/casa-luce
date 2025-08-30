@@ -34,15 +34,15 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
          <Link href="/" className="group">
-  <div className="w-64 h-64 group-hover:scale-110 transition-transform duration-300-ml-50">
-    <Image 
-      src="/logonobg.png" 
-      alt="Casa Luce Logo" 
-      width={400} 
-      height={300} 
-      className="object-contain mt-10"
-    />
-  </div>
+        <div className="w-64 h-64">
+          <Image 
+            src="/logonobg.png" 
+            alt="Casa Luce Logo" 
+            width={400} 
+            height={300} 
+            className="object-contain mt-10"
+          />
+        </div>
 </Link>
 
 

@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen relative">
       {/* Hero Section */}
-      <div className="relative h-[135vh] flex items-center justify-center overflow-hidden">
+      <div className="relative h-[95vh] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <Image
