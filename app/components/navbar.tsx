@@ -8,20 +8,48 @@ import { usePathname } from 'next/navigation';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      
+      // Update active section based on scroll position
+      const sections = ['home', 'about', 'team', 'contact'];
+      const currentSection = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   const navLinks = [
     { href: 'home', label: 'HOME' },
-    { href: 'services', label: 'SERVICES' },
+    { href: 'about', label: 'SERVICES' }, // Updated to match section ID
     { href: 'team', label: 'TEAM' },
     { href: 'contact', label: 'CONTACT US' },
   ];
@@ -34,7 +62,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo - Fixed size */}
           <Link href="/" className="group">
-            <div className="w-50 h-50 relative"> {/* Changed from w-64 h-64 */}
+            <div className="w-50 h-50 relative">
               <Image 
                 src="/logonobg.png" 
                 alt="Casa Luce Logo" 
@@ -47,20 +75,21 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex space-x-16">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.href}
-                href={link.href}
-                className={`relative text-sm font-semibold tracking-widest uppercase transition-all duration-300 hover:text-[#9e9268] group ${
-                  pathname === link.href ? 'text-[#9e9268]' : 'text-white'
+                href={`#${link.href}`}
+                onClick={(e) => handleSmoothScroll(e, link.href)}
+                className={`relative text-sm font-semibold tracking-widest uppercase transition-all duration-300 hover:text-[#9e9268] group cursor-pointer ${
+                  activeSection === link.href ? 'text-[#9e9268]' : 'text-white'
                 }`}
               >
                 {link.label}
                 {/* Animated underline */}
                 <span className="absolute -bottom-2 left-1/2 w-0 h-0.5 bg-[#9e9268] transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                {pathname === link.href && (
+                {activeSection === link.href && (
                   <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-[#9e9268]"></span>
                 )}
-              </Link>
+              </a>
             ))}
           </div>
 
@@ -102,16 +131,16 @@ const Navbar = () => {
         >
           <div className="bg-black/90 backdrop-blur-lg rounded-2xl mt-2 p-6 space-y-6">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.href}
-                href={link.href}
-                className={`block text-lg font-medium tracking-wider transition-colors duration-300 hover:text-[#9e9268] py-2 ${
-                  pathname === link.href ? 'text-[#9e9268]' : 'text-white'
+                href={`#${link.href}`}
+                onClick={(e) => handleSmoothScroll(e, link.href)}
+                className={`block text-lg font-medium tracking-wider transition-colors duration-300 hover:text-[#9e9268] py-2 cursor-pointer ${
+                  activeSection === link.href ? 'text-[#9e9268]' : 'text-white'
                 }`}
-                onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
-              </Link>
+              </a>
             ))}
           </div>
         </div>

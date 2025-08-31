@@ -77,7 +77,7 @@ const Team = () => {
                           alt={member.name}
                           width={192}
                           height={192}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter grayscale hover:grayscale-0 transition-all duration-500"
+                          className="w-full h-full object-cover group-hover:scale-110 filter grayscale hover:grayscale-0 transition-all duration-500"
                         />
                       </div>
                       {/* Floating Ring */}
