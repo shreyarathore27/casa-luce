@@ -1,7 +1,9 @@
 "use client"
 import Navbar from './components/navbar';
 import HomePage from './home/page';
-import WhatWeDo from './services/page'
+import Services from './services/page'
+import  Team from './team/page'
+
 
 export default function Home() {
   return (
@@ -20,8 +22,13 @@ export default function Home() {
         {/* Add more sections here if needed */}
         
         <section className="min-h-screen" id="about">
-          <WhatWeDo />
+          <Services />
         </section>
+
+        <section className="min-h-screen" id="team">
+          <Team />
+        </section>
+        
         {/* <section className="min-h-screen" id="services">
           <ServicesPage />
         </section> */}
