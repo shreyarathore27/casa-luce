@@ -32,19 +32,17 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-         <Link href="/" className="group">
-        <div className="w-64 h-64">
-          <Image 
-            src="/logonobg.png" 
-            alt="Casa Luce Logo" 
-            width={400} 
-            height={300} 
-            className="object-contain mt-10"
-          />
-        </div>
-</Link>
-
+          {/* Logo - Fixed size */}
+          <Link href="/" className="group">
+            <div className="w-50 h-50 relative"> {/* Changed from w-64 h-64 */}
+              <Image 
+                src="/logonobg.png" 
+                alt="Casa Luce Logo" 
+                fill
+                className="object-contain"
+              />
+            </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex space-x-16">
@@ -98,8 +96,8 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden transition-all duration-300 overflow-hidden ${
-            isMobileMenuOpen ? 'max-h-64 pb-6' : 'max-h-0'
+          className={`lg:hidden transition-all duration-300 ${
+            isMobileMenuOpen ? 'max-h-64 pb-6' : 'max-h-0 overflow-hidden'
           }`}
         >
           <div className="bg-black/90 backdrop-blur-lg rounded-2xl mt-2 p-6 space-y-6">
