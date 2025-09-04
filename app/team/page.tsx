@@ -33,7 +33,7 @@ const Team = () => {
       {/* Header Section */}
       <div className="relative z-10 pt-20 pb-16 px-4">
         <div className="text-center">
-          <h1 className="text-6xl md:text7xl font-bold bg-gradient-to-r from-amber-200 via-stone-200 to-amber-300 bg-clip-text text-transparent mb-4 tracking-tight">
+          <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-amber-200 via-stone-200 to-amber-300 bg-clip-text text-transparent mb-4 tracking-tight">
             MEET THE TEAM
           </h1>
           <div className="w-32 h-1 bg-gradient-to-r from-amber-600 to-stone-600 mx-auto mb-6 rounded-full opacity-80"></div>

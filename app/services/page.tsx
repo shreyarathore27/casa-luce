@@ -1,5 +1,4 @@
 "use client"
-import Link from 'next/link';
 import Image from 'next/image';
 import { useState, FormEvent } from 'react';
 import emailjs from '@emailjs/browser';
@@ -15,9 +14,15 @@ interface EmailTemplateParams extends Record<string, unknown> {
   timestamp: string;
 }
 
-type ServiceName = 'Branding' | 'Rebranding' | 'Marketing Consultancy' | 'Menu Development' | 'Financial Consultancy' | 'Operations Consultancy';
+type ServiceName =
+  | 'Branding'
+  | 'Rebranding'
+  | 'Marketing Consultancy'
+  | 'Menu Development'
+  | 'Financial Consultancy'
+  | 'Operations Consultancy';
 
-const WhatWeDo: React.FC = () => {
+const Services: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [selectedService, setSelectedService] = useState<ServiceName | ''>('');
   const [email, setEmail] = useState<string>('');
@@ -25,17 +30,17 @@ const WhatWeDo: React.FC = () => {
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  // PDF mapping - now using environment variables
+  // PDF mapping - using env vars
   const pdfFiles: PdfFiles = {
-    'Branding': process.env.NEXT_PUBLIC_BRANDING_PDF_ID,
-    'Rebranding': process.env.NEXT_PUBLIC_REBRANDING_PDF_ID,
-    'Marketing Consultancy': process.env.NEXT_PUBLIC_MARKETING_PDF_ID,
-    'Menu Development': process.env.NEXT_PUBLIC_MENU_PDF_ID,
-    'Financial Consultancy': process.env.NEXT_PUBLIC_FINANCIAL_PDF_ID,
-    'Operations Consultancy': process.env.NEXT_PUBLIC_OPERATIONS_PDF_ID
+    Branding: process.env.NEXT_PUBLIC_BRANDING_PDF_ID,
+    Rebranding: process.env.NEXT_PUBLIC_REBRANDING_PDF_ID,
+    "Marketing Consultancy": process.env.NEXT_PUBLIC_MARKETING_PDF_ID,
+    "Menu Development": process.env.NEXT_PUBLIC_MENU_PDF_ID,
+    "Financial Consultancy": process.env.NEXT_PUBLIC_FINANCIAL_PDF_ID,
+    "Operations Consultancy": process.env.NEXT_PUBLIC_OPERATIONS_PDF_ID,
   };
 
-  // EmailJS configuration - now using environment variables
+  // EmailJS configuration
   const EMAILJS_SERVICE_ID: string | undefined = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
   const EMAILJS_TEMPLATE_ID: string | undefined = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
   const EMAILJS_PUBLIC_KEY: string | undefined = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
@@ -55,15 +60,14 @@ const WhatWeDo: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    
+
     if (!validateEmail(email)) {
-      setError('Please enter a valid email address');
+      setError("Please enter a valid email address");
       return;
     }
 
-    // Check if EmailJS is properly configured
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-      setError('Email service is not properly configured');
+      setError("Email service is not properly configured");
       return;
     }
 
@@ -71,11 +75,10 @@ const WhatWeDo: React.FC = () => {
     setError('');
 
     try {
-      // Send email via EmailJS
       const templateParams: EmailTemplateParams = {
         user_email: email,
         service_name: selectedService,
-        timestamp: new Date().toLocaleString()
+        timestamp: new Date().toLocaleString(),
       };
 
       await emailjs.send(
@@ -86,24 +89,22 @@ const WhatWeDo: React.FC = () => {
       );
 
       setShowSuccess(true);
-      
-      // Generate download link and trigger download
+
       const fileId = pdfFiles[selectedService];
-      if (fileId && !fileId.startsWith('YOUR_')) {
+      if (fileId && !fileId.startsWith("YOUR_")) {
         const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = downloadUrl;
-        link.download = `${selectedService.replace(' ', '_')}_Showcase.pdf`;
+        link.download = `${selectedService.replace(" ", "_")}_Showcase.pdf`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       } else {
         console.warn(`PDF file ID not configured for ${selectedService}`);
       }
-
     } catch (error) {
-      console.error('Error sending email:', error);
-      setError('Failed to submit. Please try again.');
+      console.error("Error sending email:", error);
+      setError("Failed to submit. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -130,19 +131,17 @@ const WhatWeDo: React.FC = () => {
       {/* Services Grid */}
       <div className="container mx-auto px-6 -mt-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 shadow-2xl rounded-lg overflow-hidden">
-          
           {/* Branding Card */}
           <div className="bg-gradient-to-br from-[#753116] to-[#8b3a1a] text-[#f6f6f5] relative overflow-hidden min-h-[600px]">
             <div className="p-8 lg:p-12 relative z-20 h-full flex flex-col justify-between">
               <div>
                 <h2 className="text-3xl lg:text-4xl font-bold mb-6">Branding</h2>
                 <p className="text-[#f6f6f5]/90 mb-8 leading-relaxed text-lg">
-                  Crafting unique and memorable brand identities that 
-                  reflect your hospitality business and captivate your guests.
+                  Crafting unique and memorable brand identities that reflect your hospitality business and captivate your guests.
                 </p>
               </div>
               <button
-                onClick={() => handleShowcaseClick('Branding')}
+                onClick={() => handleShowcaseClick("Branding")}
                 className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] px-6 py-4 rounded-full text-sm font-bold w-fit
                 hover:from-[#9e9268] hover:to-[#b5a675] transition-all duration-500 transform hover:scale-110 hover:shadow-xl hover:shadow-[#753116]/30
                 focus:outline-none focus:ring-4 focus:ring-[#753116]/30 focus:ring-offset-2 focus:ring-offset-[#f6f6f5]
@@ -152,14 +151,8 @@ const WhatWeDo: React.FC = () => {
                 <span className="relative z-10">FREE SHOWCASE</span>
               </button>
             </div>
-            
             <div className="absolute bottom-0 left-0 right-0 h-80 z-0">
-              <Image
-                src="/branding.png"
-                alt="Branding background"
-                fill
-                className="object-cover"
-              />
+              <Image src="/branding.png" alt="Branding background" fill className="object-cover" />
             </div>
           </div>
 
@@ -169,12 +162,11 @@ const WhatWeDo: React.FC = () => {
               <div>
                 <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-[#753116]">Rebranding</h2>
                 <p className="text-[#753116]/80 mb-8 leading-relaxed text-lg">
-                  Refreshing your business with a modern identity 
-                  and strategy to stay competitive in today's market.
+                  Refreshing your business with a modern identity and strategy to stay competitive in today&apos;s market.
                 </p>
               </div>
               <button
-                onClick={() => handleShowcaseClick('Rebranding')}
+                onClick={() => handleShowcaseClick("Rebranding")}
                 className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] px-6 py-4 rounded-full text-sm font-bold w-fit
                 hover:from-[#9e9268] hover:to-[#b5a675] transition-all duration-500 transform hover:scale-110 hover:shadow-xl hover:shadow-[#753116]/30
                 focus:outline-none focus:ring-4 focus:ring-[#753116]/30 focus:ring-offset-2 focus:ring-offset-[#f6f6f5]
@@ -184,15 +176,9 @@ const WhatWeDo: React.FC = () => {
                 <span className="relative z-10">FREE SHOWCASE</span>
               </button>
             </div>
-            
             <div className="absolute bottom-0 left-0 right-0 h-80 z-0">
-              <Image
-                src="/rebranding.png"
-                alt="rebranding background"
-                fill
-                className="object-cover"
-              />
-            </div> 
+              <Image src="/rebranding.png" alt="rebranding background" fill className="object-cover" />
+            </div>
           </div>
 
           {/* Marketing Consultancy Card */}
@@ -201,12 +187,11 @@ const WhatWeDo: React.FC = () => {
               <div>
                 <h2 className="text-3xl lg:text-4xl font-bold mb-6">Marketing Consultancy</h2>
                 <p className="text-[#f6f6f5]/90 mb-8 leading-relaxed text-lg">
-                  Creating marketing strategies and campaigns 
-                  that attract, engage, and retain the right customers.
+                  Creating marketing strategies and campaigns that attract, engage, and retain the right customers.
                 </p>
               </div>
               <button
-                onClick={() => handleShowcaseClick('Marketing Consultancy')}
+                onClick={() => handleShowcaseClick("Marketing Consultancy")}
                 className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] px-6 py-4 rounded-full text-sm font-bold w-fit
                 hover:from-[#9e9268] hover:to-[#b5a675] transition-all duration-500 transform hover:scale-110 hover:shadow-xl hover:shadow-[#753116]/30
                 focus:outline-none focus:ring-4 focus:ring-[#753116]/30 focus:ring-offset-2 focus:ring-offset-[#f6f6f5]
@@ -216,14 +201,8 @@ const WhatWeDo: React.FC = () => {
                 <span className="relative z-10">FREE SHOWCASE</span>
               </button>
             </div>
-            
             <div className="absolute bottom-0 left-0 right-0 h-80 z-0">
-              <Image
-                src="/marketing.png"
-                alt="marketing background"
-                fill
-                className="object-cover"
-              />
+              <Image src="/marketing.png" alt="marketing background" fill className="object-cover" />
             </div>
           </div>
 
@@ -233,12 +212,11 @@ const WhatWeDo: React.FC = () => {
               <div>
                 <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-[#753116]">Menu Development</h2>
                 <p className="text-[#753116]/80 mb-8 leading-relaxed text-lg">
-                  Designing menus that not only look appealing but
-                  also enhance guest experience and boost sales.
+                  Designing menus that not only look appealing but also enhance guest experience and boost sales.
                 </p>
               </div>
               <button
-                onClick={() => handleShowcaseClick('Menu Development')}
+                onClick={() => handleShowcaseClick("Menu Development")}
                 className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] px-6 py-4 rounded-full text-sm font-bold w-fit
                 hover:from-[#9e9268] hover:to-[#b5a675] transition-all duration-500 transform hover:scale-110 hover:shadow-xl hover:shadow-[#753116]/30
                 focus:outline-none focus:ring-4 focus:ring-[#753116]/30 focus:ring-offset-2 focus:ring-offset-[#f6f6f5]
@@ -248,15 +226,9 @@ const WhatWeDo: React.FC = () => {
                 <span className="relative z-10">FREE SHOWCASE</span>
               </button>
             </div>
-            
             <div className="absolute bottom-0 left-0 right-0 h-80 z-0">
-              <Image
-                src="/menu.png"
-                alt="menu development background"
-                fill
-                className="object-cover"
-              />
-            </div> 
+              <Image src="/menu.png" alt="menu development background" fill className="object-cover" />
+            </div>
           </div>
 
           {/* Financial Consultancy Card */}
@@ -265,12 +237,11 @@ const WhatWeDo: React.FC = () => {
               <div>
                 <h2 className="text-3xl lg:text-4xl font-bold mb-6">Financial Consultancy</h2>
                 <p className="text-[#f6f6f5]/90 mb-8 leading-relaxed text-lg">
-                  Offering clear insights and tailored strategies
-                  to maximize profitability and control costs.
+                  Offering clear insights and tailored strategies to maximize profitability and control costs.
                 </p>
               </div>
               <button
-                onClick={() => handleShowcaseClick('Financial Consultancy')}
+                onClick={() => handleShowcaseClick("Financial Consultancy")}
                 className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] px-6 py-4 rounded-full text-sm font-bold w-fit
                 hover:from-[#9e9268] hover:to-[#b5a675] transition-all duration-500 transform hover:scale-110 hover:shadow-xl hover:shadow-[#753116]/30
                 focus:outline-none focus:ring-4 focus:ring-[#753116]/30 focus:ring-offset-2 focus:ring-offset-[#f6f6f5]
@@ -280,14 +251,8 @@ const WhatWeDo: React.FC = () => {
                 <span className="relative z-10">FREE SHOWCASE</span>
               </button>
             </div>
-            
             <div className="absolute bottom-0 left-0 right-0 h-80 z-0">
-              <Image
-                src="/finan.png"
-                alt="Financial Consultancy background"
-                fill
-                className="object-cover"
-              />
+              <Image src="/finan.png" alt="Financial Consultancy background" fill className="object-cover" />
             </div>
           </div>
 
@@ -297,12 +262,11 @@ const WhatWeDo: React.FC = () => {
               <div>
                 <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-[#753116]">Operations Consultancy</h2>
                 <p className="text-[#753116]/80 mb-8 leading-relaxed text-lg">
-                  Streamlining operations and improving efficiency
-                  to deliver exceptional guest experiences.
+                  Streamlining operations and improving efficiency to deliver exceptional guest experiences.
                 </p>
               </div>
               <button
-                onClick={() => handleShowcaseClick('Operations Consultancy')}
+                onClick={() => handleShowcaseClick("Operations Consultancy")}
                 className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] px-6 py-4 rounded-full text-sm font-bold w-fit
                 hover:from-[#9e9268] hover:to-[#b5a675] transition-all duration-500 transform hover:scale-110 hover:shadow-xl hover:shadow-[#753116]/30
                 focus:outline-none focus:ring-4 focus:ring-[#753116]/30 focus:ring-offset-2 focus:ring-offset-[#f6f6f5]
@@ -312,15 +276,9 @@ const WhatWeDo: React.FC = () => {
                 <span className="relative z-10">FREE SHOWCASE</span>
               </button>
             </div>
-            
             <div className="absolute bottom-0 left-0 right-0 h-80 z-0">
-              <Image
-                src="/operations.png"
-                alt="Operations Consultancy background"
-                fill
-                className="object-cover"
-              />
-            </div> 
+              <Image src="/operations.png" alt="Operations Consultancy background" fill className="object-cover" />
+            </div>
           </div>
         </div>
       </div>
@@ -329,7 +287,6 @@ const WhatWeDo: React.FC = () => {
       {isDialogOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-[#f6f6f5] rounded-2xl shadow-2xl max-w-md w-full mx-4 relative overflow-hidden">
-            {/* Close Button */}
             <button
               onClick={closeDialog}
               className="absolute top-4 right-4 text-[#753116] hover:text-[#8b3a1a] text-2xl font-bold z-10"
@@ -367,33 +324,22 @@ const WhatWeDo: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] py-3 rounded-lg font-bold hover:from-[#8b3a1a] hover:to-[#753116] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] py-3 rounded-lg font-bold hover:from-[#9e9268] hover:to-[#b5a675] transition-all transform hover:scale-105 disabled:opacity-50"
                   >
-                    {isLoading ? 'Sending...' : 'Get Free Showcase'}
+                    {isLoading ? "Sending..." : "Get PDF"}
                   </button>
                 </form>
               </div>
             ) : (
               <div className="p-8 text-center">
-                <div className="mb-6">
-                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#753116] mb-2">
-                    Success!
-                  </h3>
-                  <p className="text-[#753116]/70 mb-4">
-                    Your download should start automatically. Check your downloads folder.
-                  </p>
-                  <p className="text-sm text-[#753116]/60">
-                    We've also sent you a confirmation email.
-                  </p>
-                </div>
+                <div className="text-green-500 text-5xl mb-4">✓</div>
+                <h3 className="text-xl font-bold text-[#753116] mb-2">Success!</h3>
+                <p className="text-[#753116]/70 mb-4">
+                  The showcase PDF has been sent to your email.
+                </p>
                 <button
                   onClick={closeDialog}
-                  className="bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] px-6 py-3 rounded-lg font-bold hover:from-[#8b3a1a] hover:to-[#753116] transition-all duration-300"
+                  className="bg-gradient-to-r from-[#753116] to-[#8b3a1a] text-[#f6f6f5] px-6 py-2 rounded-lg font-bold hover:from-[#9e9268] hover:to-[#b5a675] transition-all"
                 >
                   Close
                 </button>
@@ -402,11 +348,8 @@ const WhatWeDo: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Bottom Spacer */}
-      <div className="h-20"></div>
     </div>
   );
 };
 
-export default WhatWeDo;
+export default Services;
